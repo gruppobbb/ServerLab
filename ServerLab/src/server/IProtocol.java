@@ -10,20 +10,20 @@ import java.io.PrintWriter;
 public interface IProtocol {
 	
 	/**
-     * Aggiorna il file dei punteggi globali sulla base del file temporaneo
-     * mandato dal Client.
+     * Aggiorna il file dei punteggi globali sulla base dell'array di elementi.
+     * mandati dal Client.
      */
 	public void updateServerScores();
 	
 	/**
-	 * Copia una stringa in un file temporaneo.
+	 * Estrapola una entry dell'arraylist di highscores dalla stringa in entrata.
 	 * @param input Stringa mandata in input dal Client 
 	 */
-	public void copyFileString(String input);
+	public void saveEntry(String input);
 	
     /**
-     * Legge dal file dei punteggi globali una stringa e la manda in output al Client.
+     * Manda una entry dell'arraylist di highscores sottoforma di stringa in output.
      */
-	public void sendFileString(PrintWriter output);
+	public void sendEntry(PrintWriter output);
 
 }

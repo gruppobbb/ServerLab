@@ -34,7 +34,7 @@ public class ScoreXMLFileManager implements IScoreFileManager{
 			Document xmlDoc = builder.parse(fileXML);
 			
 			NodeList scoreNodesList = xmlDoc.getElementsByTagName("entry");
-			for (int i = 0; i < ScoreProtocol.SCORES_NUMBER; i++) {
+			for (int i = 0; i < ScoreProtocol.MAX_SCORES; i++) {
 				Node scoreNode = scoreNodesList.item(i);				
 				NodeList scoreInfo = scoreNode.getChildNodes();
 				ScoreEntry scoreEntry = new ScoreEntry();
@@ -69,7 +69,7 @@ public class ScoreXMLFileManager implements IScoreFileManager{
 			Document xmlDoc = builder.parse(file);
 			
 			NodeList scoreNodesList = xmlDoc.getElementsByTagName("entry");
-			for (int i = 0; i < ScoreProtocol.SCORES_NUMBER; i++) {
+			for (int i = 0; i < ScoreProtocol.MAX_SCORES; i++) {
 				Node scoreNode = scoreNodesList.item(i);				
 				NodeList scoreInfo = scoreNode.getChildNodes();
 				for (int j = 0; j < scoreInfo.getLength(); j++) {

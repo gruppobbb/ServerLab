@@ -35,14 +35,14 @@ public class LocalServer {
 				
 				String fromUser;
 				while ((fromUser = in.readLine()) != null) {
-					if(fromUser.equals("SENDING SCORES ONLINE")){
+					if(fromUser.equals("SCORES SENT")){
 						break;
 					}else{
-						protocol.copyFileString(fromUser);
+						protocol.saveEntry(fromUser);
 					}
 				}
 				protocol.updateServerScores();
-				protocol.sendFileString(out);
+				protocol.sendEntry(out);
 
         } catch (IOException e) {
 			System.out

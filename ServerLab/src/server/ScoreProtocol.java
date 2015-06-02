@@ -1,11 +1,6 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,72 +13,48 @@ import java.util.Collections;
 public class ScoreProtocol implements IProtocol{
 	
 	private ArrayList<ScoreEntry> scoreList;
-	public static final String TEMP_FILENAME = "res/tempscores.xml";
 	public static final String FILENAME = "res/globalscores.xml";
-	public static final int SCORES_NUMBER = 10;
-	private File tempFile;
+	public static final int MAX_SCORES = 10;
 	private File scoresFile;
 	private IScoreFileManager manager;
-	private int copiedLineNumber;
-	private int sentLineNumber;
 	
 	public ScoreProtocol(IScoreFileManager manager) {
 		this.manager = manager;
-		copiedLineNumber = 1;
-		sentLineNumber = 1;
 		scoreList = new ArrayList<ScoreEntry>();
 		scoresFile = new File(FILENAME);
-		tempFile = new File(TEMP_FILENAME);
-		tempFile.delete();
 	}
 
 	@Override
-    public void copyFileString(String input) {
-        try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile, true));
-			writer.write(input);
-			writer.newLine();
-			writer.close();
-			copiedLineNumber++;
-		} catch (IOException e) {
-			System.out.println("Exception caught when trying to copy line "
-	                + copiedLineNumber);
-			e.printStackTrace();
-		}
+    public void saveEntry(String input) {
+        ScoreEntry entry = new ScoreEntry();
+        String[] entryValues = input.split(",");
+        entry.setPlayerName(entryValues[0]);
+        entry.setScore(Long.parseLong(entryValues[1]));
+        scoreList.add(entry);
     }
     
     @Override
     public void updateServerScores(){
-    	scoreList.clear();
-    	scoreList.addAll(manager.loadScoreFile(scoresFile));
-    	for (ScoreEntry scoreEntry : manager.loadScoreFile(tempFile)) {
+    	for (ScoreEntry scoreEntry : manager.loadScoreFile(scoresFile)) {
 			if(!scoreList.contains(scoreEntry)){
 				scoreList.add(scoreEntry);
 			}
 		}
     	Collections.sort(scoreList);
     	Collections.reverse(scoreList);
-    	if(scoreList.size() >= SCORES_NUMBER){
-        	scoreList.subList(SCORES_NUMBER, scoreList.size()).clear();
+    	if(scoreList.size() >= MAX_SCORES){
+        	scoreList.subList(MAX_SCORES, scoreList.size()).clear();
     	}
     	manager.saveScoreListToFile(scoresFile, scoreList);
     }
     
 	@Override
-	public void sendFileString(PrintWriter output) {
-		try {
-			BufferedReader fileReader = new BufferedReader(new FileReader(scoresFile));
-			String fromServer;
-			while ((fromServer = fileReader.readLine()) != null) {
-				output.println(fromServer);
-			}
-			fileReader.close();
-			sentLineNumber++;
-		} catch (IOException e) {
-			System.out.println("Exception caught when trying to copy line "
-	                + sentLineNumber);
-			e.printStackTrace();
+	public void sendEntry(PrintWriter output) {
+		for (int i = 0; i < MAX_SCORES; i++) {
+			ScoreEntry entry = scoreList.get(i);
+			output.println(entry.getPlayerName() + "," + entry.getScore());
 		}
+		scoreList.clear();
 	}
     
 }
