@@ -44,7 +44,6 @@ public class LocalServer {
 					protocol.sendEntry(out);
 					out.close();
 					in.close();
-					System.out.println("Parlami di dolore");
 				}
 				
 
