@@ -18,12 +18,18 @@ public class ScoreProtocol implements IProtocol{
 	private File scoresFile;
 	private IScoreFileManager manager;
 	
+	/**
+	 * @param manager {@link IScoreFileManager}
+	 */
 	public ScoreProtocol(IScoreFileManager manager) {
 		this.manager = manager;
 		scoreList = new ArrayList<ScoreEntry>();
 		scoresFile = new File(FILENAME);
 	}
 
+	/**
+	 * @see IProtocol
+	 */
 	@Override
     public void saveEntry(String input) {
         ScoreEntry entry = new ScoreEntry();
@@ -33,6 +39,9 @@ public class ScoreProtocol implements IProtocol{
         scoreList.add(entry);
     }
     
+	/**
+	 * @see IProtocol
+	 */
     @Override
     public void updateServerScores(){
     	for (ScoreEntry scoreEntry : manager.loadScoreFile(scoresFile)) {
@@ -48,6 +57,9 @@ public class ScoreProtocol implements IProtocol{
     	manager.saveScoreListToFile(scoresFile, scoreList);
     }
     
+    /**
+     * @see IProtocol
+     */
 	@Override
 	public void sendEntry(PrintWriter output) {
 		for (int i = 0; i < MAX_SCORES; i++) {

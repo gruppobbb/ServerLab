@@ -3,6 +3,11 @@ package server;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Interfaccia per i manager del punteggio.
+ * @author Giulia
+ *
+ */
 public interface IScoreFileManager {
 	
 	/**

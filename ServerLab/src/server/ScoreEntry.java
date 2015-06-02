@@ -10,18 +10,30 @@ public class ScoreEntry implements Comparable<ScoreEntry>{
 	private String playerName;
 	private long score;
 	
+	/** 
+	 * @return Nome del giocatore
+	 */
 	public String getPlayerName() {
 		return playerName;
 	}
 	
+	/**
+	 * @param playerName Nome del giocatore
+	 */
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
 	}
 	
+	/**
+	 * @return Punteggio
+	 */
 	public long getScore() {
 		return score;
 	}
 	
+	/**
+	 * @param score Punteggio
+	 */
 	public void setScore(long score) {
 		this.score = score;
 	}

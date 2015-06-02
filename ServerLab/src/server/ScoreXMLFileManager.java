@@ -25,6 +25,9 @@ import org.xml.sax.SAXException;
  */
 public class ScoreXMLFileManager implements IScoreFileManager{
 	
+	/**
+	 * @see IScoreFileManager
+	 */
 	@Override
 	public ArrayList<ScoreEntry> loadScoreFile(File fileXML){
 		ArrayList<ScoreEntry> scoreList = new ArrayList<ScoreEntry>();
@@ -60,6 +63,9 @@ public class ScoreXMLFileManager implements IScoreFileManager{
 		return scoreList;
     }
     
+	/**
+	 * @see IScoreFileManager
+	 */
 	@Override
     public void saveScoreListToFile(File file, ArrayList<ScoreEntry> scoreList){
     	try {
