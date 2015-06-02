@@ -8,8 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Server che gira in locale. Accetta solo una connessione per volta e poi si spegne.
- * WIP? WIP.
+ * Server che gira in locale. Accetta solo una connessione client per volta.
  * @author Giulia
  *
  */
@@ -25,24 +24,29 @@ public class LocalServer {
 			
         try ( 
                 ServerSocket serverSocket = new ServerSocket(PORT);
-                Socket clientSocket = serverSocket.accept();
-                PrintWriter out =
-                    new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
             ) {
 				IProtocol protocol = new ScoreProtocol(new ScoreXMLFileManager());
-				
-				String fromUser;
-				while ((fromUser = in.readLine()) != null) {
-					if(fromUser.equals("SCORES SENT")){
-						break;
-					}else{
-						protocol.saveEntry(fromUser);
+				Socket clientSocket;
+				while ((clientSocket = serverSocket.accept()).isConnected()) {
+	                PrintWriter out =
+	                    new PrintWriter(clientSocket.getOutputStream(), true);
+	                BufferedReader in = new BufferedReader(
+	                    new InputStreamReader(clientSocket.getInputStream()));
+					String fromUser;
+					while ((fromUser = in.readLine()) != null) {
+						if(fromUser.equals("SCORES SENT")){
+							break;
+						}else{
+							protocol.saveEntry(fromUser);
+						}
 					}
+					protocol.updateServerScores();
+					protocol.sendEntry(out);
+					out.close();
+					in.close();
+					System.out.println("Parlami di dolore");
 				}
-				protocol.updateServerScores();
-				protocol.sendEntry(out);
+				
 
         } catch (IOException e) {
 			System.out
